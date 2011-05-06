@@ -1,4 +1,9 @@
-﻿
+﻿# SQL Manager 2010 for MySQL 4.5.0.9
+# ---------------------------------------
+# Host     : localhost
+# Port     : 3306
+# Database : cgest_db
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -13,6 +18,10 @@ SET FOREIGN_KEY_CHECKS=0;
 
 CREATE TABLE `accounts` (
   `account_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bank_id` int(11) NOT NULL,
+  `account_name` varchar(256) NOT NULL,
+  `account_description` varchar(512) DEFAULT NULL,
+  `account_balance` decimal(11,2) DEFAULT NULL,
   PRIMARY KEY (`account_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
