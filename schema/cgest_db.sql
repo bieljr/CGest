@@ -1,4 +1,11 @@
-﻿/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+﻿# SQL Manager 2010 for MySQL 4.5.0.9
+# ---------------------------------------
+# Host     : localhost
+# Port     : 3306
+# Database : cgest_db
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES latin1 */;
@@ -120,6 +127,43 @@ CREATE TABLE `profiles` (
   `view_vendors` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`profile_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+#
+# Structure for the `sessions` table : 
+#
+
+DROP TABLE IF EXISTS `sessions`;
+
+CREATE TABLE `sessions` (
+  `session_id` varchar(40) NOT NULL DEFAULT '0',
+  `ip_address` varchar(16) NOT NULL DEFAULT '0',
+  `user_agent` varchar(50) NOT NULL,
+  `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
+  `user_data` text NOT NULL,
+  PRIMARY KEY (`session_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+#
+# Structure for the `transaction_types` table : 
+#
+
+DROP TABLE IF EXISTS `transaction_types`;
+
+CREATE TABLE `transaction_types` (
+  `transaction_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_type_name` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`transaction_type_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+#
+# Data for the `transaction_types` table  (LIMIT 0,500)
+#
+
+INSERT INTO `transaction_types` (`transaction_type_id`, `transaction_type_name`) VALUES 
+  (1,'Transferência Bancária'),
+  (2,'Cheque Bancário'),
+  (3,'Dinheiro');
+COMMIT;
 
 #
 # Structure for the `transactions` table : 
