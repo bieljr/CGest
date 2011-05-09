@@ -8,7 +8,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES latin1 */;
+/*!40101 SET NAMES utf8 */;
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -19,6 +19,8 @@ CREATE DATABASE `cgest_db`
     COLLATE 'utf8_general_ci';
 
 USE `cgest_db`;
+
+SET sql_mode = '';
 
 #
 # Structure for the `accounts` table : 
@@ -34,7 +36,7 @@ CREATE TABLE `accounts` (
   `account_balance` decimal(11,2) DEFAULT NULL,
   `account_active` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`account_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Structure for the `banks` table : 
@@ -45,7 +47,7 @@ DROP TABLE IF EXISTS `banks`;
 CREATE TABLE `banks` (
   `bank_id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`bank_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Structure for the `buildings` table : 
@@ -57,8 +59,9 @@ CREATE TABLE `buildings` (
   `building_id` int(11) NOT NULL AUTO_INCREMENT,
   `building_address` varchar(128) NOT NULL,
   `building_NIF` int(11) NOT NULL,
+  `building_has_elevators` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`building_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Structure for the `documents` table : 
@@ -69,7 +72,7 @@ DROP TABLE IF EXISTS `documents`;
 CREATE TABLE `documents` (
   `document_id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`document_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Structure for the `fractions` table : 
@@ -89,7 +92,7 @@ CREATE TABLE `fractions` (
   `fraction_owner_postal_code` varchar(8) NOT NULL,
   `fraction_owner_address_city` varchar(20) NOT NULL,
   PRIMARY KEY (`fraction_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Structure for the `profiles` table : 
@@ -126,7 +129,7 @@ CREATE TABLE `profiles` (
   `delete_vendors` tinyint(1) NOT NULL DEFAULT '0',
   `view_vendors` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`profile_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 #
 # Structure for the `sessions` table : 
@@ -141,7 +144,7 @@ CREATE TABLE `sessions` (
   `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
   `user_data` text NOT NULL,
   PRIMARY KEY (`session_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Structure for the `transaction_types` table : 
@@ -153,7 +156,7 @@ CREATE TABLE `transaction_types` (
   `transaction_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `transaction_type_name` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`transaction_type_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 #
 # Data for the `transaction_types` table  (LIMIT 0,500)
@@ -173,8 +176,11 @@ DROP TABLE IF EXISTS `transactions`;
 
 CREATE TABLE `transactions` (
   `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`transaction_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `transaction_type_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`transaction_id`),
+  KEY `transaction_type_id` (`transaction_type_id`),
+  CONSTRAINT `transactions_type_fk` FOREIGN KEY (`transaction_type_id`) REFERENCES `transaction_types` (`transaction_type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Structure for the `users` table : 
@@ -183,9 +189,23 @@ CREATE TABLE `transactions` (
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(128) NOT NULL,
+  `password` varchar(256) NOT NULL,
+  `firstName` varchar(64) NOT NULL,
+  `lastName` varchar(64) NOT NULL,
+  `email` varchar(256) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+#
+# Data for the `users` table  (LIMIT 0,500)
+#
+
+INSERT INTO `users` (`id`, `username`, `password`, `firstName`, `lastName`, `email`, `active`) VALUES 
+  (1,'zbing','Hax0rm3n0t!\"#','Pedro','Correia','pedro.correia@gmail.com',1);
+COMMIT;
 
 #
 # Structure for the `vendors` table : 
@@ -196,7 +216,7 @@ DROP TABLE IF EXISTS `vendors`;
 CREATE TABLE `vendors` (
   `vendor_id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`vendor_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
