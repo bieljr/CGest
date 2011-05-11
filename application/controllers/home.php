@@ -1,31 +1,23 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
 
 class Home extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-	public function index()
-	{
-	   if(!$this->session->userdata('uid')){
-	       redirect('login');
-	   } else {
-		$this->load->view('home');
-       }
-	}
-}
+    public function index() {
+        if (!$this->session->userdata('userID')) {
+            redirect('/login');
+        } else {
+            $config = array('userID' => 1);
+            $this->load->library('acl', $config);
+            $acl_test = $this->uri->segment(1) . '_';
+            $acl_test .= ($this->uri->segment(2) != "") ? $this->uri->segment(2) : 'view';
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+            if (!$this->acl->hasPermission($acl_test)) {
+                show_error('You need permission ' . $acl_test . ' to do this.', 500,
+                    'Insuficient permissions');
+            }
+        }
+    }
+}
