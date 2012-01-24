@@ -1,5 +1,5 @@
 # CGest
 
-## AplicaÁ„o para gest„o de condomÌnios
+## Aplica√ß√£o para gest√£o de condom√≠nios
 
-… um projecto desenvolvido nos meus tempos livres e **n„o existe ainda nenhuma vers„o funcional.**
+√â um projecto desenvolvido nos meus tempos livres e **n√£o existe ainda nenhuma vers√£o funcional.**
